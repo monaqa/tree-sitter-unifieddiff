@@ -31,13 +31,12 @@ module.exports = grammar({
   ],
 
   rules: {
-    // TODO: add the actual grammar rules
     source_file: ($) => seq(repeat($.patch)),
 
     patch: ($) =>
       seq(optseq($.git_comment, $.git_index), $.header, repeat1($.hunk)),
 
-    // TODO: 適当
+    // FIXME: 適当
     git_comment: ($) =>
       seq(
         "diff --git ",
