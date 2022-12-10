@@ -23,11 +23,6 @@
     "fields": {}
   },
   {
-    "type": "comments",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "from_file_line",
     "named": true,
     "fields": {},
@@ -114,6 +109,10 @@
           "named": true
         },
         {
+          "type": "hunk_comment",
+          "named": true
+        },
+        {
           "type": "hunk_info",
           "named": true
         }
@@ -121,36 +120,24 @@
     }
   },
   {
+    "type": "hunk_comment",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "hunk_info",
     "named": true,
-    "fields": {
-      "new": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "hunk_range",
-            "named": true
-          }
-        ]
-      },
-      "old": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "hunk_range",
-            "named": true
-          }
-        ]
-      }
-    },
+    "fields": {},
     "children": {
-      "multiple": false,
-      "required": false,
+      "multiple": true,
+      "required": true,
       "types": [
         {
-          "type": "comments",
+          "type": "hunk_range_new",
+          "named": true
+        },
+        {
+          "type": "hunk_range_old",
           "named": true
         }
       ]
@@ -167,7 +154,26 @@
     "fields": {}
   },
   {
-    "type": "hunk_range",
+    "type": "hunk_range_new",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "hunk_length",
+          "named": true
+        },
+        {
+          "type": "hunk_location",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "hunk_range_old",
     "named": true,
     "fields": {},
     "children": {

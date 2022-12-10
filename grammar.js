@@ -12,7 +12,7 @@ const tokens = {
   hunk_length: /\d+/,
 
   body: /[^\n]+/,
-  comments: /[^\n]+/,
+  hunk_comment: /[^\n]+/,
 };
 
 const tokensFunc = Object.fromEntries(
@@ -23,6 +23,8 @@ module.exports = grammar({
   name: "unifieddiff",
 
   supertypes: ($) => [$._diff_line],
+
+  extras: ($) => [],
 
   externals: ($) => [
     $._indicator_nochange,
@@ -69,24 +71,24 @@ module.exports = grammar({
         "\n",
       ),
 
-    hunk: ($) => seq($.hunk_info, repeat1($._diff_line)),
+    hunk: ($) =>
+      seq($.hunk_info, optional($.hunk_comment), "\n", repeat1($._diff_line)),
 
     hunk_info: ($) =>
       seq(
         "@@",
         /[ \t]+/,
-        "-",
-        field("old", $.hunk_range),
+        $.hunk_range_old,
         /[ \t]+/,
-        "+",
-        field("new", $.hunk_range),
+        $.hunk_range_new,
         /[ \t]+/,
         "@@",
-        optional($.comments),
-        "\n",
       ),
 
-    hunk_range: ($) => seq($.hunk_location, ",", $.hunk_length),
+    hunk_range_old: ($) =>
+      seq("-", $.hunk_location, optseq(",", $.hunk_length)),
+    hunk_range_new: ($) =>
+      seq("+", $.hunk_location, optseq(",", $.hunk_length)),
 
     _diff_line: ($) => choice($.line_nochange, $.line_added, $.line_deleted),
 

@@ -235,6 +235,22 @@
           "name": "hunk_info"
         },
         {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "hunk_comment"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "STRING",
+          "value": "\n"
+        },
+        {
           "type": "REPEAT1",
           "content": {
             "type": "SYMBOL",
@@ -255,32 +271,16 @@
           "value": "[ \\t]+"
         },
         {
-          "type": "STRING",
-          "value": "-"
-        },
-        {
-          "type": "FIELD",
-          "name": "old",
-          "content": {
-            "type": "SYMBOL",
-            "name": "hunk_range"
-          }
+          "type": "SYMBOL",
+          "name": "hunk_range_old"
         },
         {
           "type": "PATTERN",
           "value": "[ \\t]+"
         },
         {
-          "type": "STRING",
-          "value": "+"
-        },
-        {
-          "type": "FIELD",
-          "name": "new",
-          "content": {
-            "type": "SYMBOL",
-            "name": "hunk_range"
-          }
+          "type": "SYMBOL",
+          "name": "hunk_range_new"
         },
         {
           "type": "PATTERN",
@@ -289,39 +289,74 @@
         {
           "type": "STRING",
           "value": "@@"
-        },
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "comments"
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
-        },
-        {
-          "type": "STRING",
-          "value": "\n"
         }
       ]
     },
-    "hunk_range": {
+    "hunk_range_old": {
       "type": "SEQ",
       "members": [
+        {
+          "type": "STRING",
+          "value": "-"
+        },
         {
           "type": "SYMBOL",
           "name": "hunk_location"
         },
         {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": ","
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "hunk_length"
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        }
+      ]
+    },
+    "hunk_range_new": {
+      "type": "SEQ",
+      "members": [
+        {
           "type": "STRING",
-          "value": ","
+          "value": "+"
         },
         {
           "type": "SYMBOL",
-          "name": "hunk_length"
+          "name": "hunk_location"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": ","
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "hunk_length"
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         }
       ]
     },
@@ -460,17 +495,12 @@
       "type": "PATTERN",
       "value": "[^\\n]+"
     },
-    "comments": {
+    "hunk_comment": {
       "type": "PATTERN",
       "value": "[^\\n]+"
     }
   },
-  "extras": [
-    {
-      "type": "PATTERN",
-      "value": "\\s"
-    }
-  ],
+  "extras": [],
   "conflicts": [],
   "precedences": [],
   "externals": [
