@@ -58,16 +58,34 @@
           "value": "diff --git "
         },
         {
-          "type": "SYMBOL",
-          "name": "filename"
+          "type": "FIELD",
+          "name": "old",
+          "content": {
+            "type": "ALIAS",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_filename_git_command"
+            },
+            "named": true,
+            "value": "filename"
+          }
         },
         {
           "type": "STRING",
           "value": " "
         },
         {
-          "type": "SYMBOL",
-          "name": "filename"
+          "type": "FIELD",
+          "name": "new",
+          "content": {
+            "type": "ALIAS",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_filename_git_command"
+            },
+            "named": true,
+            "value": "filename"
+          }
         },
         {
           "type": "STRING",
@@ -126,7 +144,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "from_file"
+          "name": "filename"
         },
         {
           "type": "CHOICE",
@@ -180,7 +198,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "to_file"
+          "name": "filename"
         },
         {
           "type": "CHOICE",
@@ -241,8 +259,12 @@
           "value": "-"
         },
         {
-          "type": "SYMBOL",
-          "name": "hunk_info_old"
+          "type": "FIELD",
+          "name": "old",
+          "content": {
+            "type": "SYMBOL",
+            "name": "hunk_range"
+          }
         },
         {
           "type": "PATTERN",
@@ -253,8 +275,12 @@
           "value": "+"
         },
         {
-          "type": "SYMBOL",
-          "name": "hunk_info_new"
+          "type": "FIELD",
+          "name": "new",
+          "content": {
+            "type": "SYMBOL",
+            "name": "hunk_range"
+          }
         },
         {
           "type": "PATTERN",
@@ -282,6 +308,23 @@
         }
       ]
     },
+    "hunk_range": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "hunk_location"
+        },
+        {
+          "type": "STRING",
+          "value": ","
+        },
+        {
+          "type": "SYMBOL",
+          "name": "hunk_length"
+        }
+      ]
+    },
     "_diff_line": {
       "type": "CHOICE",
       "members": [
@@ -303,8 +346,13 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "SYMBOL",
-          "name": "indicator_nochange"
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_indicator_nochange"
+          },
+          "named": false,
+          "value": " "
         },
         {
           "type": "CHOICE",
@@ -328,8 +376,13 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "SYMBOL",
-          "name": "indicator_added"
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_indicator_added"
+          },
+          "named": false,
+          "value": "+"
         },
         {
           "type": "CHOICE",
@@ -353,8 +406,13 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "SYMBOL",
-          "name": "indicator_deleted"
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_indicator_deleted"
+          },
+          "named": false,
+          "value": "-"
         },
         {
           "type": "CHOICE",
@@ -374,15 +432,11 @@
         }
       ]
     },
-    "filename": {
+    "_filename_git_command": {
       "type": "PATTERN",
       "value": "[^ \\t\\r\\n]+"
     },
-    "from_file": {
-      "type": "PATTERN",
-      "value": "[^\\t\\r\\n]+"
-    },
-    "to_file": {
+    "filename": {
       "type": "PATTERN",
       "value": "[^\\t\\r\\n]+"
     },
@@ -394,13 +448,13 @@
       "type": "PATTERN",
       "value": "\\d\\d\\d\\d-\\d\\d-\\d\\d \\d\\d:\\d\\d:\\d\\d.\\d+ [+-]\\d\\d\\d\\d"
     },
-    "hunk_info_old": {
+    "hunk_location": {
       "type": "PATTERN",
-      "value": "\\d+,\\d+"
+      "value": "\\d+"
     },
-    "hunk_info_new": {
+    "hunk_length": {
       "type": "PATTERN",
-      "value": "\\d+,\\d+"
+      "value": "\\d+"
     },
     "body": {
       "type": "PATTERN",
@@ -422,15 +476,15 @@
   "externals": [
     {
       "type": "SYMBOL",
-      "name": "indicator_nochange"
+      "name": "_indicator_nochange"
     },
     {
       "type": "SYMBOL",
-      "name": "indicator_added"
+      "name": "_indicator_added"
     },
     {
       "type": "SYMBOL",
-      "name": "indicator_deleted"
+      "name": "_indicator_deleted"
     }
   ],
   "inline": [],

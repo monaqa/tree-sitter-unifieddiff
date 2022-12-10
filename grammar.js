@@ -1,7 +1,6 @@
 const tokens = {
-  filename: /[^ \t\r\n]+/,
-  from_file: /[^\t\r\n]+/,
-  to_file: /[^\t\r\n]+/,
+  _filename_git_command: /[^ \t\r\n]+/,
+  filename: /[^\t\r\n]+/,
 
   // FIXME: 適当
   from_file_modification_time:
@@ -9,8 +8,8 @@ const tokens = {
   to_file_modification_time:
     /\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d.\d+ [+-]\d\d\d\d/,
 
-  hunk_info_old: /\d+,\d+/,
-  hunk_info_new: /\d+,\d+/,
+  hunk_location: /\d+/,
+  hunk_length: /\d+/,
 
   body: /[^\n]+/,
   comments: /[^\n]+/,
@@ -26,9 +25,9 @@ module.exports = grammar({
   supertypes: ($) => [$._diff_line],
 
   externals: ($) => [
-    $.indicator_nochange,
-    $.indicator_added,
-    $.indicator_deleted,
+    $._indicator_nochange,
+    $._indicator_added,
+    $._indicator_deleted,
   ],
 
   rules: {
@@ -39,7 +38,14 @@ module.exports = grammar({
       seq(optseq($.git_comment, $.git_index), $.header, repeat1($.hunk)),
 
     // TODO: 適当
-    git_comment: ($) => seq("diff --git ", $.filename, " ", $.filename, "\n"),
+    git_comment: ($) =>
+      seq(
+        "diff --git ",
+        field("old", alias($._filename_git_command, $.filename)),
+        " ",
+        field("new", alias($._filename_git_command, $.filename)),
+        "\n",
+      ),
     git_index: ($) =>
       seq("index ", /[0-9a-f]{7}\.\.[0-9a-f]{7}/, " ", /\d{6}/, "\n"),
 
@@ -49,7 +55,7 @@ module.exports = grammar({
       seq(
         "---",
         /[ \t]+/,
-        $.from_file,
+        $.filename,
         optional(/[ \t]+/),
         optseq($.from_file_modification_time, /[ \t]+/),
         "\n",
@@ -59,7 +65,7 @@ module.exports = grammar({
       seq(
         "+++",
         /[ \t]+/,
-        $.to_file,
+        $.filename,
         optseq("\t", $.to_file_modification_time),
         "\n",
       ),
@@ -71,21 +77,26 @@ module.exports = grammar({
         "@@",
         /[ \t]+/,
         "-",
-        $.hunk_info_old,
+        field("old", $.hunk_range),
         /[ \t]+/,
         "+",
-        $.hunk_info_new,
+        field("new", $.hunk_range),
         /[ \t]+/,
         "@@",
         optional($.comments),
         "\n",
       ),
 
+    hunk_range: ($) => seq($.hunk_location, ",", $.hunk_length),
+
     _diff_line: ($) => choice($.line_nochange, $.line_added, $.line_deleted),
 
-    line_nochange: ($) => seq($.indicator_nochange, optional($.body), "\n"),
-    line_added: ($) => seq($.indicator_added, optional($.body), "\n"),
-    line_deleted: ($) => seq($.indicator_deleted, optional($.body), "\n"),
+    line_nochange: ($) =>
+      seq(alias($._indicator_nochange, " "), optional($.body), "\n"),
+    line_added: ($) =>
+      seq(alias($._indicator_added, "+"), optional($.body), "\n"),
+    line_deleted: ($) =>
+      seq(alias($._indicator_deleted, "-"), optional($.body), "\n"),
 
     ...tokensFunc,
   },
