@@ -1,0 +1,260 @@
+[
+  {
+    "type": "_diff_line",
+    "named": true,
+    "subtypes": [
+      {
+        "type": "line_added",
+        "named": true
+      },
+      {
+        "type": "line_deleted",
+        "named": true
+      },
+      {
+        "type": "line_nochange",
+        "named": true
+      }
+    ]
+  },
+  {
+    "type": "from_file",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "from_file_line",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "from_file",
+          "named": true
+        },
+        {
+          "type": "from_file_modification_time",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "from_file_modification_time",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "header",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "from_file_line",
+          "named": true
+        },
+        {
+          "type": "to_file_line",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "hunk",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "_diff_line",
+          "named": true
+        },
+        {
+          "type": "hunk_info",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "hunk_info",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "hunk_info_new",
+          "named": true
+        },
+        {
+          "type": "hunk_info_old",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "hunk_info_new",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "hunk_info_old",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "line_added",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "body",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "line_deleted",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "body",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "line_nochange",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "body",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "patch",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "header",
+          "named": true
+        },
+        {
+          "type": "hunk",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "source_file",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "patch",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "to_file",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "to_file_line",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "to_file",
+          "named": true
+        },
+        {
+          "type": "to_file_modification_time",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "to_file_modification_time",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "\t",
+    "named": false
+  },
+  {
+    "type": "\n",
+    "named": false
+  },
+  {
+    "type": " ",
+    "named": false
+  },
+  {
+    "type": "+",
+    "named": false
+  },
+  {
+    "type": "+++",
+    "named": false
+  },
+  {
+    "type": "-",
+    "named": false
+  },
+  {
+    "type": "---",
+    "named": false
+  },
+  {
+    "type": "@@",
+    "named": false
+  },
+  {
+    "type": "body",
+    "named": true
+  }
+]
