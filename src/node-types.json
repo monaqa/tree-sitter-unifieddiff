@@ -18,6 +18,16 @@
     ]
   },
   {
+    "type": "body",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "comments",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "from_file",
     "named": true,
     "fields": {}
@@ -43,6 +53,26 @@
   },
   {
     "type": "from_file_modification_time",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "git_comment",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "filename",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "git_index",
     "named": true,
     "fields": {}
   },
@@ -93,6 +123,10 @@
       "required": true,
       "types": [
         {
+          "type": "comments",
+          "named": true
+        },
+        {
           "type": "hunk_info_new",
           "named": true
         },
@@ -118,11 +152,15 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
-      "required": false,
+      "multiple": true,
+      "required": true,
       "types": [
         {
           "type": "body",
+          "named": true
+        },
+        {
+          "type": "indicator_added",
           "named": true
         }
       ]
@@ -133,11 +171,15 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
-      "required": false,
+      "multiple": true,
+      "required": true,
       "types": [
         {
           "type": "body",
+          "named": true
+        },
+        {
+          "type": "indicator_deleted",
           "named": true
         }
       ]
@@ -148,11 +190,15 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
-      "required": false,
+      "multiple": true,
+      "required": true,
       "types": [
         {
           "type": "body",
+          "named": true
+        },
+        {
+          "type": "indicator_nochange",
           "named": true
         }
       ]
@@ -166,6 +212,14 @@
       "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "git_comment",
+          "named": true
+        },
+        {
+          "type": "git_index",
+          "named": true
+        },
         {
           "type": "header",
           "named": true
@@ -254,7 +308,27 @@
     "named": false
   },
   {
-    "type": "body",
+    "type": "diff --git ",
+    "named": false
+  },
+  {
+    "type": "filename",
+    "named": true
+  },
+  {
+    "type": "index ",
+    "named": false
+  },
+  {
+    "type": "indicator_added",
+    "named": true
+  },
+  {
+    "type": "indicator_deleted",
+    "named": true
+  },
+  {
+    "type": "indicator_nochange",
     "named": true
   }
 ]

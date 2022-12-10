@@ -17,6 +17,27 @@
       "type": "SEQ",
       "members": [
         {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "git_comment"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "git_index"
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
           "type": "SYMBOL",
           "name": "header"
         },
@@ -26,6 +47,56 @@
             "type": "SYMBOL",
             "name": "hunk"
           }
+        }
+      ]
+    },
+    "git_comment": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "diff --git "
+        },
+        {
+          "type": "SYMBOL",
+          "name": "filename"
+        },
+        {
+          "type": "STRING",
+          "value": " "
+        },
+        {
+          "type": "SYMBOL",
+          "name": "filename"
+        },
+        {
+          "type": "STRING",
+          "value": "\n"
+        }
+      ]
+    },
+    "git_index": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "index "
+        },
+        {
+          "type": "PATTERN",
+          "value": "[0-9a-f]{7}\\.\\.[0-9a-f]{7}"
+        },
+        {
+          "type": "STRING",
+          "value": " "
+        },
+        {
+          "type": "PATTERN",
+          "value": "\\d{6}"
+        },
+        {
+          "type": "STRING",
+          "value": "\n"
         }
       ]
     },
@@ -194,6 +265,18 @@
           "value": "@@"
         },
         {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "comments"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
           "type": "STRING",
           "value": "\n"
         }
@@ -220,8 +303,8 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": " "
+          "type": "SYMBOL",
+          "name": "indicator_nochange"
         },
         {
           "type": "CHOICE",
@@ -245,8 +328,8 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "+"
+          "type": "SYMBOL",
+          "name": "indicator_added"
         },
         {
           "type": "CHOICE",
@@ -270,8 +353,8 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "-"
+          "type": "SYMBOL",
+          "name": "indicator_deleted"
         },
         {
           "type": "CHOICE",
@@ -290,6 +373,10 @@
           "value": "\n"
         }
       ]
+    },
+    "filename": {
+      "type": "PATTERN",
+      "value": "[^ \\t\\r\\n]+"
     },
     "from_file": {
       "type": "PATTERN",
@@ -318,6 +405,10 @@
     "body": {
       "type": "PATTERN",
       "value": "[^\\n]+"
+    },
+    "comments": {
+      "type": "PATTERN",
+      "value": "[^\\n]+"
     }
   },
   "extras": [
@@ -328,7 +419,20 @@
   ],
   "conflicts": [],
   "precedences": [],
-  "externals": [],
+  "externals": [
+    {
+      "type": "SYMBOL",
+      "name": "indicator_nochange"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "indicator_added"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "indicator_deleted"
+    }
+  ],
   "inline": [],
   "supertypes": [
     "_diff_line"
