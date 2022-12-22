@@ -57,6 +57,7 @@ module.exports = grammar({
         "\n",
         "index ",
         /[0-9a-f]{7}\.\.[0-9a-f]{7}/,
+        "\n",
       ),
     git_index_changed: ($) =>
       seq("index ", /[0-9a-f]{7}\.\.[0-9a-f]{7}/, " ", /\d{6}/, "\n"),

@@ -128,6 +128,10 @@
         {
           "type": "PATTERN",
           "value": "[0-9a-f]{7}\\.\\.[0-9a-f]{7}"
+        },
+        {
+          "type": "STRING",
+          "value": "\n"
         }
       ]
     },
