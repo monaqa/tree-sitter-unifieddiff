@@ -22,7 +22,7 @@ const tokensFunc = Object.fromEntries(
 module.exports = grammar({
   name: "unifieddiff",
 
-  supertypes: ($) => [$._diff_line],
+  supertypes: ($) => [$._git_index, $._diff_line],
 
   extras: ($) => [],
 
@@ -36,7 +36,7 @@ module.exports = grammar({
     source_file: ($) => seq(repeat($.patch)),
 
     patch: ($) =>
-      seq(optseq($.git_comment, $.git_index), $.header, repeat1($.hunk)),
+      seq(optseq($.git_comment, $._git_index), $.header, repeat1($.hunk)),
 
     // FIXME: 適当
     git_comment: ($) =>
@@ -47,7 +47,18 @@ module.exports = grammar({
         field("new", alias($._filename_git_command, $.filename)),
         "\n",
       ),
-    git_index: ($) =>
+
+    _git_index: ($) => choice($.git_index_added, $.git_index_changed),
+
+    git_index_added: ($) =>
+      seq(
+        "new file mode ",
+        /\d{6}/,
+        "\n",
+        "index ",
+        /[0-9a-f]{7}\.\.[0-9a-f]{7}/,
+      ),
+    git_index_changed: ($) =>
       seq("index ", /[0-9a-f]{7}\.\.[0-9a-f]{7}/, " ", /\d{6}/, "\n"),
 
     header: ($) => seq($.from_file_line, $.to_file_line),

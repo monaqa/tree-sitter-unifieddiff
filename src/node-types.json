@@ -18,6 +18,20 @@
     ]
   },
   {
+    "type": "_git_index",
+    "named": true,
+    "subtypes": [
+      {
+        "type": "git_index_added",
+        "named": true
+      },
+      {
+        "type": "git_index_changed",
+        "named": true
+      }
+    ]
+  },
+  {
     "type": "body",
     "named": true,
     "fields": {}
@@ -73,7 +87,12 @@
     }
   },
   {
-    "type": "git_index",
+    "type": "git_index_added",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "git_index_changed",
     "named": true,
     "fields": {}
   },
@@ -245,11 +264,11 @@
       "required": true,
       "types": [
         {
-          "type": "git_comment",
+          "type": "_git_index",
           "named": true
         },
         {
-          "type": "git_index",
+          "type": "git_comment",
           "named": true
         },
         {
@@ -348,6 +367,10 @@
   },
   {
     "type": "index ",
+    "named": false
+  },
+  {
+    "type": "new file mode ",
     "named": false
   }
 ]

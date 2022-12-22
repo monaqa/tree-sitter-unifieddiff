@@ -28,7 +28,7 @@
                 },
                 {
                   "type": "SYMBOL",
-                  "name": "git_index"
+                  "name": "_git_index"
                 }
               ]
             },
@@ -93,7 +93,45 @@
         }
       ]
     },
-    "git_index": {
+    "_git_index": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "git_index_added"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "git_index_changed"
+        }
+      ]
+    },
+    "git_index_added": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "new file mode "
+        },
+        {
+          "type": "PATTERN",
+          "value": "\\d{6}"
+        },
+        {
+          "type": "STRING",
+          "value": "\n"
+        },
+        {
+          "type": "STRING",
+          "value": "index "
+        },
+        {
+          "type": "PATTERN",
+          "value": "[0-9a-f]{7}\\.\\.[0-9a-f]{7}"
+        }
+      ]
+    },
+    "git_index_changed": {
       "type": "SEQ",
       "members": [
         {
@@ -519,6 +557,7 @@
   ],
   "inline": [],
   "supertypes": [
+    "_git_index",
     "_diff_line"
   ]
 }

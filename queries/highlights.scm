@@ -1,5 +1,7 @@
 (git_comment) @type
-(git_index) @preproc
+
+(git_index_added) @preproc
+(git_index_changed) @preproc
 
 (from_file_line) @text.diff.delsign
 (to_file_line) @text.diff.addsign
