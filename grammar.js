@@ -8,6 +8,8 @@ const tokens = {
   to_file_modification_time:
     /\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d.\d+ [+-]\d\d\d\d/,
 
+  mode: /\d{6}/,
+
   hunk_location: /\d+/,
   hunk_length: /\d+/,
 
@@ -19,10 +21,14 @@ const tokensFunc = Object.fromEntries(
   Object.entries(tokens).map(([k, v]) => [k, (_) => v]),
 );
 
+function line(...args) {
+  return seq(...args, "\n");
+}
+
 module.exports = grammar({
   name: "unifieddiff",
 
-  supertypes: ($) => [$._git_index, $._diff_line],
+  supertypes: ($) => [$._git_extended_header, $._diff_line],
 
   extras: ($) => [],
 
@@ -33,54 +39,69 @@ module.exports = grammar({
   ],
 
   rules: {
-    source_file: ($) => seq(repeat($.patch)),
+    source_file: ($) => repeat($.patch),
 
-    patch: ($) =>
-      seq(optseq($.git_comment, $._git_index), $.header, repeat1($.hunk)),
+    patch: ($) => seq(optional($.git_header), $.header, repeat1($.hunk)),
 
-    // FIXME: 適当
-    git_comment: ($) =>
-      seq(
+    git_header: ($) => seq($.git_diff_header, repeat($._git_extended_header)),
+
+    git_diff_header: ($) =>
+      line(
         "diff --git ",
         field("old", alias($._filename_git_command, $.filename)),
         " ",
         field("new", alias($._filename_git_command, $.filename)),
-        "\n",
       ),
 
-    _git_index: ($) => choice($.git_index_added, $.git_index_changed),
-
-    git_index_added: ($) =>
-      seq(
-        "new file mode ",
-        /\d{6}/,
-        "\n",
-        "index ",
-        /[0-9a-f]{7}\.\.[0-9a-f]{7}/,
-        "\n",
+    _git_extended_header: ($) =>
+      choice(
+        $.git_old_mode,
+        $.git_new_mode,
+        $.git_deleted_file_mode,
+        $.git_new_file_mode,
+        $.git_copy_from,
+        $.git_copy_to,
+        $.git_rename_from,
+        $.git_rename_to,
+        $.git_similarity_index,
+        $.git_dissimilarity_index,
+        $.git_index,
       ),
-    git_index_changed: ($) =>
-      seq("index ", /[0-9a-f]{7}\.\.[0-9a-f]{7}/, " ", /\d{6}/, "\n"),
+
+    git_old_mode: ($) => line("old mode ", $.mode),
+    git_new_mode: ($) => line("new mode ", $.mode),
+    git_deleted_file_mode: ($) => line("deleted file mode ", $.mode),
+    git_new_file_mode: ($) => line("new file mode ", $.mode),
+    git_copy_from: ($) =>
+      line("copy from ", alias($._filename_git_command, $.filename)),
+    git_copy_to: ($) =>
+      line("copy to ", alias($._filename_git_command, $.filename)),
+    git_rename_from: ($) =>
+      line("rename from ", alias($._filename_git_command, $.filename)),
+    git_rename_to: ($) =>
+      line("rename to ", alias($._filename_git_command, $.filename)),
+    git_similarity_index: ($) => line("similarity index ", /\d+/),
+    git_dissimilarity_index: ($) => line("dissimilarity index ", /\d+/),
+    git_index: ($) =>
+      line("index ", /[0-9a-f]{7}\.\.[0-9a-f]{7}/, optseq(" ", $.mode)),
 
     header: ($) => seq($.from_file_line, $.to_file_line),
 
     from_file_line: ($) =>
-      seq(
+      line(
         "---",
         /[ \t]+/,
         $.filename,
         optional(/[ \t]+/),
         optseq($.from_file_modification_time, /[ \t]+/),
-        "\n",
       ),
 
     to_file_line: ($) =>
-      seq(
+      line(
         "+++",
         /[ \t]+/,
         $.filename,
         optseq("\t", $.to_file_modification_time),
-        "\n",
       ),
 
     hunk: ($) =>
@@ -105,11 +126,10 @@ module.exports = grammar({
     _diff_line: ($) => choice($.line_nochange, $.line_added, $.line_deleted),
 
     line_nochange: ($) =>
-      seq(alias($._indicator_nochange, " "), optional($.body), "\n"),
-    line_added: ($) =>
-      seq(alias($._indicator_added, "+"), optional($.body), "\n"),
+      line(alias($._indicator_nochange, " "), optional($.body)),
+    line_added: ($) => line(alias($._indicator_added, "+"), optional($.body)),
     line_deleted: ($) =>
-      seq(alias($._indicator_deleted, "-"), optional($.body), "\n"),
+      line(alias($._indicator_deleted, "-"), optional($.body)),
 
     ...tokensFunc,
   },

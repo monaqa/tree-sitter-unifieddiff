@@ -18,15 +18,51 @@
     ]
   },
   {
-    "type": "_git_index",
+    "type": "_git_extended_header",
     "named": true,
     "subtypes": [
       {
-        "type": "git_index_added",
+        "type": "git_copy_from",
         "named": true
       },
       {
-        "type": "git_index_changed",
+        "type": "git_copy_to",
+        "named": true
+      },
+      {
+        "type": "git_deleted_file_mode",
+        "named": true
+      },
+      {
+        "type": "git_dissimilarity_index",
+        "named": true
+      },
+      {
+        "type": "git_index",
+        "named": true
+      },
+      {
+        "type": "git_new_file_mode",
+        "named": true
+      },
+      {
+        "type": "git_new_mode",
+        "named": true
+      },
+      {
+        "type": "git_old_mode",
+        "named": true
+      },
+      {
+        "type": "git_rename_from",
+        "named": true
+      },
+      {
+        "type": "git_rename_to",
+        "named": true
+      },
+      {
+        "type": "git_similarity_index",
         "named": true
       }
     ]
@@ -61,7 +97,52 @@
     "fields": {}
   },
   {
-    "type": "git_comment",
+    "type": "git_copy_from",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "filename",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "git_copy_to",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "filename",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "git_deleted_file_mode",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "mode",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "git_diff_header",
     "named": true,
     "fields": {
       "new": {
@@ -87,12 +168,121 @@
     }
   },
   {
-    "type": "git_index_added",
+    "type": "git_dissimilarity_index",
     "named": true,
     "fields": {}
   },
   {
-    "type": "git_index_changed",
+    "type": "git_header",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "_git_extended_header",
+          "named": true
+        },
+        {
+          "type": "git_diff_header",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "git_index",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "mode",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "git_new_file_mode",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "mode",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "git_new_mode",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "mode",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "git_old_mode",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "mode",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "git_rename_from",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "filename",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "git_rename_to",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "filename",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "git_similarity_index",
     "named": true,
     "fields": {}
   },
@@ -264,11 +454,7 @@
       "required": true,
       "types": [
         {
-          "type": "_git_index",
-          "named": true
-        },
-        {
-          "type": "git_comment",
+          "type": "git_header",
           "named": true
         },
         {
@@ -358,7 +544,23 @@
     "named": false
   },
   {
+    "type": "copy from ",
+    "named": false
+  },
+  {
+    "type": "copy to ",
+    "named": false
+  },
+  {
+    "type": "deleted file mode ",
+    "named": false
+  },
+  {
     "type": "diff --git ",
+    "named": false
+  },
+  {
+    "type": "dissimilarity index ",
     "named": false
   },
   {
@@ -370,7 +572,31 @@
     "named": false
   },
   {
+    "type": "mode",
+    "named": true
+  },
+  {
     "type": "new file mode ",
+    "named": false
+  },
+  {
+    "type": "new mode ",
+    "named": false
+  },
+  {
+    "type": "old mode ",
+    "named": false
+  },
+  {
+    "type": "rename from ",
+    "named": false
+  },
+  {
+    "type": "rename to ",
+    "named": false
+  },
+  {
+    "type": "similarity index ",
     "named": false
   }
 ]

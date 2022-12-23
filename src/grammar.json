@@ -2,16 +2,11 @@
   "name": "unifieddiff",
   "rules": {
     "source_file": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "REPEAT",
-          "content": {
-            "type": "SYMBOL",
-            "name": "patch"
-          }
-        }
-      ]
+      "type": "REPEAT",
+      "content": {
+        "type": "SYMBOL",
+        "name": "patch"
+      }
     },
     "patch": {
       "type": "SEQ",
@@ -20,17 +15,8 @@
           "type": "CHOICE",
           "members": [
             {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "git_comment"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "_git_index"
-                }
-              ]
+              "type": "SYMBOL",
+              "name": "git_header"
             },
             {
               "type": "BLANK"
@@ -50,7 +36,23 @@
         }
       ]
     },
-    "git_comment": {
+    "git_header": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "git_diff_header"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_git_extended_header"
+          }
+        }
+      ]
+    },
+    "git_diff_header": {
       "type": "SEQ",
       "members": [
         {
@@ -93,20 +95,107 @@
         }
       ]
     },
-    "_git_index": {
+    "_git_extended_header": {
       "type": "CHOICE",
       "members": [
         {
           "type": "SYMBOL",
-          "name": "git_index_added"
+          "name": "git_old_mode"
         },
         {
           "type": "SYMBOL",
-          "name": "git_index_changed"
+          "name": "git_new_mode"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "git_deleted_file_mode"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "git_new_file_mode"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "git_copy_from"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "git_copy_to"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "git_rename_from"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "git_rename_to"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "git_similarity_index"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "git_dissimilarity_index"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "git_index"
         }
       ]
     },
-    "git_index_added": {
+    "git_old_mode": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "old mode "
+        },
+        {
+          "type": "SYMBOL",
+          "name": "mode"
+        },
+        {
+          "type": "STRING",
+          "value": "\n"
+        }
+      ]
+    },
+    "git_new_mode": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "new mode "
+        },
+        {
+          "type": "SYMBOL",
+          "name": "mode"
+        },
+        {
+          "type": "STRING",
+          "value": "\n"
+        }
+      ]
+    },
+    "git_deleted_file_mode": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "deleted file mode "
+        },
+        {
+          "type": "SYMBOL",
+          "name": "mode"
+        },
+        {
+          "type": "STRING",
+          "value": "\n"
+        }
+      ]
+    },
+    "git_new_file_mode": {
       "type": "SEQ",
       "members": [
         {
@@ -114,20 +203,8 @@
           "value": "new file mode "
         },
         {
-          "type": "PATTERN",
-          "value": "\\d{6}"
-        },
-        {
-          "type": "STRING",
-          "value": "\n"
-        },
-        {
-          "type": "STRING",
-          "value": "index "
-        },
-        {
-          "type": "PATTERN",
-          "value": "[0-9a-f]{7}\\.\\.[0-9a-f]{7}"
+          "type": "SYMBOL",
+          "name": "mode"
         },
         {
           "type": "STRING",
@@ -135,7 +212,129 @@
         }
       ]
     },
-    "git_index_changed": {
+    "git_copy_from": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "copy from "
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_filename_git_command"
+          },
+          "named": true,
+          "value": "filename"
+        },
+        {
+          "type": "STRING",
+          "value": "\n"
+        }
+      ]
+    },
+    "git_copy_to": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "copy to "
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_filename_git_command"
+          },
+          "named": true,
+          "value": "filename"
+        },
+        {
+          "type": "STRING",
+          "value": "\n"
+        }
+      ]
+    },
+    "git_rename_from": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "rename from "
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_filename_git_command"
+          },
+          "named": true,
+          "value": "filename"
+        },
+        {
+          "type": "STRING",
+          "value": "\n"
+        }
+      ]
+    },
+    "git_rename_to": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "rename to "
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_filename_git_command"
+          },
+          "named": true,
+          "value": "filename"
+        },
+        {
+          "type": "STRING",
+          "value": "\n"
+        }
+      ]
+    },
+    "git_similarity_index": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "similarity index "
+        },
+        {
+          "type": "PATTERN",
+          "value": "\\d+"
+        },
+        {
+          "type": "STRING",
+          "value": "\n"
+        }
+      ]
+    },
+    "git_dissimilarity_index": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "dissimilarity index "
+        },
+        {
+          "type": "PATTERN",
+          "value": "\\d+"
+        },
+        {
+          "type": "STRING",
+          "value": "\n"
+        }
+      ]
+    },
+    "git_index": {
       "type": "SEQ",
       "members": [
         {
@@ -147,12 +346,25 @@
           "value": "[0-9a-f]{7}\\.\\.[0-9a-f]{7}"
         },
         {
-          "type": "STRING",
-          "value": " "
-        },
-        {
-          "type": "PATTERN",
-          "value": "\\d{6}"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": " "
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "mode"
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         },
         {
           "type": "STRING",
@@ -525,6 +737,10 @@
       "type": "PATTERN",
       "value": "\\d\\d\\d\\d-\\d\\d-\\d\\d \\d\\d:\\d\\d:\\d\\d.\\d+ [+-]\\d\\d\\d\\d"
     },
+    "mode": {
+      "type": "PATTERN",
+      "value": "\\d{6}"
+    },
     "hunk_location": {
       "type": "PATTERN",
       "value": "\\d+"
@@ -561,7 +777,7 @@
   ],
   "inline": [],
   "supertypes": [
-    "_git_index",
+    "_git_extended_header",
     "_diff_line"
   ]
 }
