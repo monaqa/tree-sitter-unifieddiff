@@ -342,8 +342,24 @@
           "value": "index "
         },
         {
-          "type": "PATTERN",
-          "value": "[0-9a-f]{7}\\.\\.[0-9a-f]{7}"
+          "type": "FIELD",
+          "name": "from",
+          "content": {
+            "type": "SYMBOL",
+            "name": "hash_index"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": ".."
+        },
+        {
+          "type": "FIELD",
+          "name": "to",
+          "content": {
+            "type": "SYMBOL",
+            "name": "hash_index"
+          }
         },
         {
           "type": "CHOICE",
@@ -740,6 +756,10 @@
     "mode": {
       "type": "PATTERN",
       "value": "\\d{6}"
+    },
+    "hash_index": {
+      "type": "PATTERN",
+      "value": "[0-9a-f]{7}"
     },
     "hunk_location": {
       "type": "PATTERN",

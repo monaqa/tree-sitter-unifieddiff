@@ -194,7 +194,28 @@
   {
     "type": "git_index",
     "named": true,
-    "fields": {},
+    "fields": {
+      "from": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "hash_index",
+            "named": true
+          }
+        ]
+      },
+      "to": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "hash_index",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": false,
       "required": false,
@@ -540,6 +561,10 @@
     "named": false
   },
   {
+    "type": "..",
+    "named": false
+  },
+  {
     "type": "@@",
     "named": false
   },
@@ -565,6 +590,10 @@
   },
   {
     "type": "filename",
+    "named": true
+  },
+  {
+    "type": "hash_index",
     "named": true
   },
   {

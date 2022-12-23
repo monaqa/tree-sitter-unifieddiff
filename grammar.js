@@ -9,6 +9,7 @@ const tokens = {
     /\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d.\d+ [+-]\d\d\d\d/,
 
   mode: /\d{6}/,
+  hash_index: /[0-9a-f]{7}/,
 
   hunk_location: /\d+/,
   hunk_length: /\d+/,
@@ -83,7 +84,13 @@ module.exports = grammar({
     git_similarity_index: ($) => line("similarity index ", /\d+/),
     git_dissimilarity_index: ($) => line("dissimilarity index ", /\d+/),
     git_index: ($) =>
-      line("index ", /[0-9a-f]{7}\.\.[0-9a-f]{7}/, optseq(" ", $.mode)),
+      line(
+        "index ",
+        field("from", $.hash_index),
+        "..",
+        field("to", $.hash_index),
+        optseq(" ", $.mode),
+      ),
 
     header: ($) => seq($.from_file_line, $.to_file_line),
 
